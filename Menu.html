@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roast Toast Coast Cafe</title>
+  <style>
+    :root {
+      --gold: #ffcc00;
+      --cream: #fdf2d7;
+      --dark: #111111;
+      --card: #1c1c1c;
+      --text: #f4f4f4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #000000, #1a1a1a 60%, #2d1600);
+      min-height: 100vh;
+    }
+
+    .page {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      min-height: 100vh;
+    }
+
+    .content {
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--gold);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--cream);
+    }
+
+    .menu-section {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .menu-section h2 {
+      margin: 0 0 16px;
+      color: var(--gold);
+      font-size: 1.5rem;
+    }
+
+    .category {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      background: #161616;
+      transition: border-color 0.3s ease;
+    }
+
+    .category.active {
+      border-color: rgba(255, 204, 0, 0.4);
+    }
+
+    .category button {
+      width: 100%;
+      background: transparent;
+      color: var(--text);
+      border: 0;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .category button:hover {
+      background: rgba(255, 204, 0, 0.05);
+    }
+
+    .category button span {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.85rem;
+    }
+
+    .category.active button span {
+      transform: rotate(180deg);
+    }
+
+    /* Accordion slide animation */
+    .category-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease-out, opacity 0.2s ease;
+      padding: 0 16px;
+      opacity: 0;
+    }
+
+    .category.active .category-content {
+      max-height: 200px; /* Adjust to fit list content height */
+      padding: 0 16px 14px;
+      opacity: 1;
+    }
+
+    .category ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .category ul li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: #e6e6e6;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+
+    .category ul li:hover {
+      color: var(--gold);
+      padding-left: 6px;
+      cursor: pointer;
+    }
+
+    .category ul li:last-child { border-bottom: none; }
+
+    .image-panel {
+      background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+      min-height: 100vh;
+    }
+
+    @media (min-width: 801px) {
+      .page {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .content {
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 204, 0, 0.2) transparent;
+      }
+      .content::-webkit-scrollbar {
+        width: 6px;
+      }
+      .content::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .content::-webkit-scrollbar-thumb {
+        background: rgba(255, 204, 0, 0.2);
+        border-radius: 3px;
+      }
+      .content::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 204, 0, 0.4);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .page { grid-template-columns: 1fr; }
+      .image-panel { min-height: 280px; order: -1; }
+      .content { padding: 24px 16px 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="content">
+      <section class="hero">
+        <h1>Welcome to Roast Toast Coast Cafe</h1>
+        <p>Fresh flavors, cozy vibes, and seaside comfort in every bite.</p>
+      </section>
+
+      <section class="menu-section">
+        <h2>Today's Menu</h2>
+
+        <div class="category">
+          <button type="button" aria-expanded="false" aria-controls="brews-list" onclick="toggleCategory(this)">
+            Breezy Brews <span>▼</span>
+          </button>
+          <div id="brews-list" class="category-content">
+            <ul>
+              <li>Signature Latte</li>
+              <li>Iced Sea Salt Mocha</li>
+              <li>Golden Matcha</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="category">
+          <button type="button" aria-expanded="false" aria-controls="toasts-list" onclick="toggleCategory(this)">
+            Toasty Delights <span>▼</span>
+          </button>
+          <div id="toasts-list" class="category-content">
+            <ul>
+              <li>Sunrise Toast</li>
+              <li>Garden Grilled Sandwich</li>
+              <li>Cheesy Melt Panini</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="category">
+          <button type="button" aria-expanded="false" aria-controls="coastal-list" onclick="toggleCategory(this)">
+            Coastal Bites <span>▼</span>
+          </button>
+          <div id="coastal-list" class="category-content">
+            <ul>
+              <li>Crab Croquette</li>
+              <li>Sea Breeze Salad</li>
+              <li>Spicy Garlic Fries</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="image-panel" aria-label="Cafe interior"></aside>
+  </div>
+
+  <script>
+    function toggleCategory(button) {
+      const category = button.closest('.category');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      
+      // Toggle current category class for CSS transitions
+      category.classList.toggle('active');
+      
+      // Update screen reader accessibility state
+      button.setAttribute('aria-expanded', !isExpanded);
+    }
+  </script>
+</body>
+</html>
