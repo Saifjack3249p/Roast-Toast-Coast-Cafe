@@ -1,4 +1,4 @@
- # Roast Toast Coast Cafe ☕🌊
+# Roast Toast Coast Cafe ☕🌊
 
 A modern, responsive café menu website built using **HTML, CSS, and JavaScript**. The project features a stylish dark theme, animated accordion menu sections, and a fully responsive layout that provides a smooth user experience across desktop and mobile devices.
 
@@ -128,7 +128,7 @@ The website adapts to:
 
 ## 👨‍💻 Author
 
-Md SAif ALi
+MD SAIF ALI
 
 BCA Student | Aspiring Cloud & DevOps Engineer
 
